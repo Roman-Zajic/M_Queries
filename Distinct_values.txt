@@ -1,0 +1,15 @@
+let
+
+    Table1 = Excel.CurrentWorkbook(){[Name="Table1"]}[Content],
+    Table2 = Excel.CurrentWorkbook(){[Name="Table2"]}[Content],
+
+    Column1 = Table.Column(Table1, "ID"),
+    Column2 = Table.Column(Table2, "ID"),
+
+    CombinedColumns = List.Union({Column1, Column2}),
+
+    Distinct = List.Distinct(CombinedColumns)
+
+in
+
+    Distinct
