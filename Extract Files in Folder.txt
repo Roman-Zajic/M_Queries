@@ -1,0 +1,8 @@
+let
+    Path = "C:\Users\...",
+    Files = Folder.Files(Path),
+    ExtractCSV = Table.AddColumn(Files, "Custom", each Csv.Document([Content])), //Excel.Workbook([Content],true)
+    ClearColumns = Table.RemoveColumns(ExtractCSV,{"Content", "Name", "Extension", "Date accessed", "Date modified", "Date created", "Attributes", "Folder Path"}),
+    ExpandFiles = Table.ExpandTableColumn(ClearColumns, "Custom", {"Column1", "Column2", "Column3"})
+  in
+    ExpandFiles
