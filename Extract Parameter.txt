@@ -1,0 +1,15 @@
+//Required Table "Parameters"
+//with columns "Parameter" and "Value"
+
+
+let Parameter = (Table as text, ParameterName as text) as text =>
+
+let
+    ParameterTable = Excel.CurrentWorkbook(),
+    ParameterTableC = ParameterTable{[Name="Parameters"]}[Content],
+    ParameterRow = Table.SelectRows(ParameterTableC, each [Parameter]=ParameterName),
+    ParameterValue = ParameterRow{0}[Value]
+in
+    ParameterValue
+
+in Parameter
