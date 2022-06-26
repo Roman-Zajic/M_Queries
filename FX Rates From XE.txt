@@ -1,0 +1,17 @@
+//Requires a 1 cell named range T_Date formated as text containing date
+
+let
+
+    GetFX = (DateParam as text) =>
+    let  
+        GetWeb = Web.Page(Web.Contents("http://www.xe.com/currencytables/?from=USD&date="&DateParam)),
+        GetContent = GetWeb{0}[Data],
+        ProperTypes = Table.TransformColumnTypes(GetContent,{{"Units per USD", type number}, {"USD per unit", type number}})
+    in
+        ProperTypes,
+
+    CurrentDate = Excel.CurrentWorkbook(){[Name="T_Date"]}[Content]{0}[Column1],
+
+    Result = GetFX(CurrentDate)
+in
+    Result
