@@ -1,4 +1,4 @@
-//Requires a 1 cell named range T_Date formated as text containing date
+//Requires a 1 cell named range T_Date formated as text containing date (YYYY-MM-DD)
 
 let
 
