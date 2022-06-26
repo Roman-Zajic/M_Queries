@@ -23,9 +23,11 @@ let
     InsertDayOfYear = Table.AddColumn(InsertWeekOfYear, "Day of Year", each Date.DayOfYear([Date]), Int64.Type),
     InsertDayOfWeek = Table.AddColumn(InsertDayOfYear, "Day of Week", each Date.DayOfWeek([Date]) +1, Int64.Type),
     InsertDayOfMonth = Table.AddColumn(InsertDayOfWeek, "Day of Month", each Date.Day([Date]), Int64.Type),
-    InsertDayName = Table.AddColumn(InsertDayOfMonth, "Day Name", each Date.DayOfWeekName([Date]), type text),    
+    InsertDayName = Table.AddColumn(InsertDayOfMonth, "Day Name", each Date.DayOfWeekName([Date]), type text),
+    InsertIsWeeken = Table.AddColumn(InsertDayName, "Is Weekend", each if [Day of Week] > 5 then 1 else 0, Int64.Type ),
     
-    InsertShortDayName = Table.AddColumn(InsertDayName, "DDD", each Text.Start([Day Name], 3), type text),
+    
+    InsertShortDayName = Table.AddColumn(InsertIsWeeken, "DDD", each Text.Start([Day Name], 3), type text),
     
     InsertShortMonthYearName = Table.AddColumn(InsertShortDayName, "MMM-YY", each [MMM] & "-" &Text.From([Year]-2000)),
     InsertShortMonthYearOrder = Table.AddColumn(InsertShortMonthYearName, "MMM-YY order", each Text.From([Year]-2000)&Text.PadStart(Text.From([Month Number]), 2, "0")),
