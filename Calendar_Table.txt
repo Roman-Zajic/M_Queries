@@ -18,7 +18,9 @@ let
     InsertMonthName = Table.AddColumn(InsertMonthNumber, "Month Name", each Date.MonthName([Date]), type text),
     InsertShortMonthName = Table.AddColumn(InsertMonthName, "MMM", each Text.Start([Month Name], 3), type text),
 
-    InsertDayOfYear = Table.AddColumn(InsertShortMonthName, "Day of Year", each Date.DayOfYear([Date]), Int64.Type),
+    InsertWeekOfYear = Table.AddColumn(InsertShortMonthName, "Week of Year", each Date.WeekOfYear([Date]), Int64.Type),
+
+    InsertDayOfYear = Table.AddColumn(InsertWeekOfYear, "Day of Year", each Date.DayOfYear([Date]), Int64.Type),
     InsertDayOfWeek = Table.AddColumn(InsertDayOfYear, "Day of Week", each Date.DayOfWeek([Date]) +1, Int64.Type),
     InsertDayOfMonth = Table.AddColumn(InsertDayOfWeek, "Day of Month", each Date.Day([Date]), Int64.Type),
     InsertDayName = Table.AddColumn(InsertDayOfMonth, "Day Name", each Date.DayOfWeekName([Date]), type text),    
@@ -26,6 +28,7 @@ let
     InsertShortDayName = Table.AddColumn(InsertDayName, "DDD", each Text.Start([Day Name], 3), type text),
     
     InsertShortMonthYearName = Table.AddColumn(InsertShortDayName, "MMM-YY", each [MMM] & "-" &Text.From([Year]-2000)),
-    Calendar = Table.ReorderColumns(InsertShortMonthYearName,{"Date", "Year", "Quarter", "Month Number", "Month Name", "MMM", "Day of Year", "Day of Month", "Day of Week", "Day Name", "DDD", "MMM-YY"})
+    InsertShortMonthYearOrder = Table.AddColumn(InsertShortMonthYearName, "MMM-YY order", each Text.From([Year]-2000)&Text.PadStart(Text.From([Month Number]), 2, "0")),
+    Calendar = Table.ReorderColumns(InsertShortMonthYearOrder,{"Date", "Year", "Quarter", "Month Number", "Month Name", "MMM", "Day of Year", "Day of Month", "Day of Week", "Day Name", "DDD", "MMM-YY"})
 in
     Calendar
